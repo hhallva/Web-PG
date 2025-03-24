@@ -1,12 +1,19 @@
 ﻿@page "/Edit/{userId}/Games"
 @model Red.Pages.GamesModel
 @{
+    ViewData["Title"] = $"Библиотека";
     var games = ViewBag.games;
 }
 
-<link rel="stylesheet" href="~/css/gamesPage.css" />
+<link rel="stylesheet" href="~/css/gamesPage.css"/>
 
-<div>
+<div style="position:relative;">
+    <a href="~/Edit/@Model.UserId" 
+       style="position: absolute;
+              right: 5px;
+              top: 5px;
+              text-decoration: none;">⚙️</a>
+
     <h2>Игры пользователя</h2>
     @if (Model.UserGames != null && Model.UserGames.Any())
     {
@@ -14,7 +21,9 @@
             @foreach (var game in @Model.UserGames)
             {
                 <li class="game-item">
-                    @game.Name
+                    <a href="/Games/@game.Id" class="game-link">
+                        <span>@game.Name</span>
+                    </a>
                     <form method="post" asp-page-handler="DeleteGame" asp-route-gameId="@game.Id">
                         <button type="submit" class="delete-button">&times;</button>
                     </form>
