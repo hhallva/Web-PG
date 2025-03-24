@@ -18,6 +18,10 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Game> Games { get; set; }
 
+    public virtual DbSet<GameVersion> GameVersions { get; set; }
+
+    public virtual DbSet<Genre> Genres { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,7 +34,30 @@ public partial class AppDbContext : DbContext
         {
             entity.ToTable("Game");
 
-            entity.Property(e => e.Description).HasMaxLength(100);
+            entity.Property(e => e.Description).HasMaxLength(300);
+            entity.Property(e => e.Name).HasMaxLength(50);
+
+            entity.HasOne(d => d.Genre).WithMany(p => p.Games)
+                .HasForeignKey(d => d.GenreId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Game_Genre");
+        });
+
+        modelBuilder.Entity<GameVersion>(entity =>
+        {
+            entity.Property(e => e.Description).HasMaxLength(300);
+            entity.Property(e => e.Version).HasMaxLength(50);
+
+            entity.HasOne(d => d.Game).WithMany(p => p.GameVersions)
+                .HasForeignKey(d => d.GameId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GameVersions_Game");
+        });
+
+        modelBuilder.Entity<Genre>(entity =>
+        {
+            entity.ToTable("Genre");
+
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
