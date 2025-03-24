@@ -1,0 +1,44 @@
+﻿.message{
+    text-align: center;
+    color: green;
+}
+
+label {
+    margin-bottom: 1px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="tel"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="tel"]:focus {
+        outline: none;
+        border-color: #007bff; 
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+    }
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 20px auto; 
+    transition: background-color 0.3s ease;
+}
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+

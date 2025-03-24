@@ -1,0 +1,43 @@
+﻿@page "{id}"
+
+@model Red.Pages.EditModel
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<link rel="stylesheet" href="~/css/editPage.css" />
+
+<div class="user-info">
+    <h2>Информация о пользователе</h2>
+    <form method="post">
+        <input type="hidden" asp-for="@Model.CurrentUser.Id" />
+        <p>
+            <label>Логин:</label><br />
+            <input type="text" asp-for="@Model.CurrentUser.Login" />
+        </p>
+        <p>
+            <label>Пароль:</label><br />
+            <input type="password" asp-for="@Model.CurrentUser.Password" value="@Model.CurrentUser.Password" />
+        </p>
+        <p>
+            <label>Телефон:</label><br />
+            <input type="tel" asp-for="@Model.CurrentUser.Phone" />
+        </p>
+        <input type="submit" value="Сохранить" />
+        <a style="margin-left: 10px" href="@Model.CurrentUser.Id/Games">Перейти к играм</a>
+    </form>
+
+    @if (Request.Method == "POST")
+    {
+        <p class="message">@Model.Message</p>
+    }
+</div>
+
+
+
+
+
+
+
+
+

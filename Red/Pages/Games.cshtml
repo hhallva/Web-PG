@@ -1,0 +1,63 @@
+﻿@page "/Edit/{userId}/Games"
+@model Red.Pages.GamesModel
+@{
+    var games = ViewBag.games;
+}
+
+<link rel="stylesheet" href="~/css/gamesPage.css" />
+
+<div>
+    <h2>Игры пользователя</h2>
+    @if (Model.UserGames != null && Model.UserGames.Any())
+    {
+        <ul name="games">
+            @foreach (var game in @Model.UserGames)
+            {
+                <li class="game-item">
+                    @game.Name
+                    <form method="post" asp-page-handler="DeleteGame" asp-route-gameId="@game.Id">
+                        <button type="submit" class="delete-button">&times;</button>
+                    </form>
+                </li>
+
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Пользователь не играет в игры</p>
+    }
+
+    <div class="add-game-form">
+        <h3>Добавление игры</h3>
+        <form method="post" asp-page-handler="AddGame">
+            <input type="hidden" asp-for="UserId" />
+            <select asp-for="SelectedGameId">
+                <option value="">Выберите игру</option>
+                @if (games != null)
+                {
+                    @foreach (var game in games)
+                    {
+                        if (Model.UserGames == null || !Model.UserGames.Any(g => g.Id == game.Id))
+                        {
+                            <option value="@game.Id">@game.Name</option>
+                        }
+                    }
+                }
+            </select>
+            <button class="add-button" type="submit">Добавить игру</button>
+        </form>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+</div>

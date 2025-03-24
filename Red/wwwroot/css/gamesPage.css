@@ -1,0 +1,93 @@
+﻿ul[name="games"] {
+    list-style: none;
+    padding: 0;
+}
+
+.game-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;  
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-button {
+    color: red;
+    background:none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; 
+    transition: opacity 0.2s ease-in-out;
+}
+
+    .game-item:hover .delete-button {
+        opacity: 1; 
+    }
+
+
+.add-game-form {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+    .add-game-form h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+    }
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.add-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+    .add-button:hover {
+        background-color: #0056b3;
+    }
+
+.alert {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+    .alert-danger ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .alert-danger li {
+        margin-bottom: 5px;
+    }

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Red", "Red\Red.csproj", "{46E1B7FE-C5D7-4DCD-89D8-028DB74EAE29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{BFCEB9E7-DC36-491C-A7ED-9AEA88E98A3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{2F34B82A-A1DE-4913-AD44-4F4B9283D272}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46E1B7FE-C5D7-4DCD-89D8-028DB74EAE29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E1B7FE-C5D7-4DCD-89D8-028DB74EAE29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E1B7FE-C5D7-4DCD-89D8-028DB74EAE29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E1B7FE-C5D7-4DCD-89D8-028DB74EAE29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFCEB9E7-DC36-491C-A7ED-9AEA88E98A3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFCEB9E7-DC36-491C-A7ED-9AEA88E98A3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFCEB9E7-DC36-491C-A7ED-9AEA88E98A3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCEB9E7-DC36-491C-A7ED-9AEA88E98A3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F34B82A-A1DE-4913-AD44-4F4B9283D272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F34B82A-A1DE-4913-AD44-4F4B9283D272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F34B82A-A1DE-4913-AD44-4F4B9283D272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F34B82A-A1DE-4913-AD44-4F4B9283D272}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

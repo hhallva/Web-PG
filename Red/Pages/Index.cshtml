@@ -1,0 +1,18 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<link rel="stylesheet" href="~/css/mainPage.css" />
+
+<div>
+    <h2>Список пользователей</h2>
+        @foreach (var user in Model.Users)
+        {
+            <div class ="user-details">
+                <a href="./Edit/@user.Id">⚙️</a>
+                <p class="detail-label">@user.Login</p>
+            </div>
+        }
+</div>
