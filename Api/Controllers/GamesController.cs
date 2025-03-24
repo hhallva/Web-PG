@@ -21,19 +21,25 @@ namespace Api.Controllers
             _context = context;
         }
 
+        //Метод для получения списка всех существующих игр
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGamesAsync() 
-            => await _context.Games.ToListAsync();
+            => await _context.Games
+                .Include(g => g.Genre)
+                .ToListAsync();
 
+
+        //Метод для получения информации об одной конкретной игре
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGameAsync(int id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _context.Games
+                .Include(g => g.Genre)
+                .Include(g => g.GameVersions)
+                .SingleOrDefaultAsync(g => g.Id == id);
 
             if (game == null)
-            {
                 return NotFound();
-            }
 
             return game;
         }

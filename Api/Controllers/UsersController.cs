@@ -17,16 +17,13 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
-        }
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers() 
+            => await _context.Users.ToListAsync();
 
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUser(int userId)
         {
             var user = await _context.Users
-                .Include(u => u.Games)
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
@@ -58,10 +55,12 @@ namespace Api.Controllers
             return NoContent();
         }
 
+        //Метод для получения списка всех игр из библиотеки пользователя
         [HttpGet("{userId}/Games")]
         public async Task<ActionResult<List<Game>>> GetGamesAsync(int userId)
         {
             var games = await _context.Games
+                .Include(g => g.Genre)
                 .Where(g => g.Users.Any(u => u.Id == userId))
                 .ToListAsync();
 
@@ -71,8 +70,9 @@ namespace Api.Controllers
             return games;
         }
 
+        //Методы для добалвения существующей игры в библиотеку
         [HttpPost("{userId}/Games/{gameId}")]
-        public async Task<IActionResult> PostGameAsync(int userId, int gameId)
+        public async Task<IActionResult> PostUserGameAsync(int userId, int gameId)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{userId}/Games/{gameId}")]
-        public async Task<IActionResult> DeleteGameAsync(int userId, int gameId)
+        public async Task<IActionResult> DeleteUserGameAsync(int userId, int gameId)
         {
             try
             {
