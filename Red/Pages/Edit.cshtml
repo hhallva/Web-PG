@@ -1,8 +1,8 @@
-﻿@page "{id}"
+﻿@page "{userId}"
 
 @model Red.Pages.EditModel
 @{
-    ViewData["Title"] = "Редактирование";
+    ViewData["Title"] = $"{Model.CurrentUser.Login}-Редактирование";
 }
 
 <link rel="stylesheet" href="~/css/editPage.css" />
@@ -24,7 +24,6 @@
             <input type="tel" asp-for="@Model.CurrentUser.Phone" />
         </p>
         <input type="submit" value="Сохранить" />
-        <a style="margin-left: 10px" href="@Model.CurrentUser.Id/Games">Перейти к играм</a>
     </form>
 
     @if (Request.Method == "POST")
@@ -32,6 +31,8 @@
         <p class="message">@Model.Message</p>
     }
 </div>
+
+@* <span href="./Edit/@user.Id"> ⚙️</span> *@
 
 
 
