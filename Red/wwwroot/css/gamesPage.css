@@ -91,3 +91,11 @@ select {
     .alert-danger li {
         margin-bottom: 5px;
     }
+
+.game-link {
+    text-decoration: none;
+    color: inherit; 
+    display: block; 
+    width: calc(100% - 50px); 
+    margin-right: auto; 
+}
