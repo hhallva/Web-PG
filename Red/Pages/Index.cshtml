@@ -10,9 +10,10 @@
     <h2>Список пользователей</h2>
         @foreach (var user in Model.Users)
         {
-            <div class ="user-details">
-                <a href="./Edit/@user.Id">⚙️</a>
-                <p class="detail-label">@user.Login</p>
-            </div>
+            <a href="./Edit/@user.Id/Games"> 
+                <div class="user-details">
+                    <p class="detail-label">@user.Login</p>
+                </div>
+            </a>
         }
 </div>
