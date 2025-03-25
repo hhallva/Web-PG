@@ -22,6 +22,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Genre> Genres { get; set; }
 
+    public virtual DbSet<Material> Materials { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -59,6 +61,20 @@ public partial class AppDbContext : DbContext
             entity.ToTable("Genre");
 
             entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Material>(entity =>
+        {
+            entity.ToTable("Material");
+
+            entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Path).HasMaxLength(300);
+            entity.Property(e => e.Type).HasMaxLength(50);
+
+            entity.HasOne(d => d.Game).WithMany(p => p.Materials)
+                .HasForeignKey(d => d.GameId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Material_Game");
         });
 
         modelBuilder.Entity<User>(entity =>
