@@ -35,4 +35,40 @@
             }
         </tbody>
     </table>
+
+
+    <section>
+        <h2>Список материалов</h2>
+        @if (Model.GameMaterials.Any())
+        {
+            <ul>
+                @foreach (var material in Model.GameMaterials)
+                {
+                    <li>
+                        @if (material.FileType == "URL")
+                        {
+                            <a href="@material.FilePath" target="_blank">@material.Name</a>
+                        }
+                        else
+                        {
+                            <a href="/materials/@(Model.Game.Name.Replace(" ", "_"))/@System.IO.Path.GetFileName(material.FilePath)" target="_blank">@material.Name</a>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Нет загруженных материалов.</p>
+        }
+    </section>
+
+    @* Форма для загрузки файла *@
+    <section>
+        <h2>Загрузить материалы</h2>
+        <form method="post" enctype="multipart/form-data" asp-page-handler="Upload" asp-route-id="@Model.Game.Id">
+            <input type="file" asp-for="UploadedFile" />
+            <button type="submit">Загрузить</button>
+        </form>
+    </section>
 </div>
