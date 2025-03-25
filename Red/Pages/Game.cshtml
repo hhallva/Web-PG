@@ -1,0 +1,38 @@
+﻿@page "/Games/{gameId}"
+@model Red.Pages.GameModel
+@{
+    ViewData["Title"] = Model.Game.Name;
+}
+
+<link rel="stylesheet" href="~/css/gamePage.css" />
+
+<div>
+    <h1>@Model.Game.Name</h1>
+
+    <h2>Описание</h2>
+    <p>@Model.Game.Description</p>
+    <p>Жанр: @Model.Game.Genre.Name</p>
+</div>
+
+<div>
+    <h3>История версий</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Версия</th>
+                <th>Дата публикации</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var version in Model.Game.GameVersions)
+            {
+                <tr>
+                    <td>@version.Version</td>
+                    <td>@version.PublicationDate.ToShortDateString()</td>
+                    <td>@version.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
