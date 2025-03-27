@@ -29,8 +29,65 @@ tbody tr:hover {
     white-space: nowrap; 
 }
 
+.span-cont {
+    display: flex;
+    gap: 10px;
+    align-content: start;
+}
+
+   
+
 @media print {
     h2 {
         color: #ff0000;
     }
+}
+
+
+
+
+
+
+ul[name="materials"] {
+    list-style: none;
+    padding: 0;
+}
+
+.material-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-button {
+    color: red;
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.material-item:hover .delete-button {
+    opacity: 1;
+}
+
+.material-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: calc(100% - 50px);
+    margin-right: auto;
 }

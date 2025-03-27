@@ -1,10 +1,5 @@
 ﻿using DataLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayer.Services
 {
@@ -32,6 +27,8 @@ namespace DataLayer.Services
         public async Task<Game?> GetAsync(int id)
             => await _client.GetFromJsonAsync<Game?>($"{id}");
 
+        public async Task<List<Material?>> GetMaterialsAsync(int id)
+           => await _client.GetFromJsonAsync<List<Material?>>($"{id}/Materials");
 
     }
 }

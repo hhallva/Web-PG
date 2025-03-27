@@ -37,38 +37,46 @@
     </table>
 
 
-   @*  <section>
-        <h2>Список материалов</h2>
-        @if (Model.GameMaterials.Any())
-        {
-            <ul>
-                @foreach (var material in Model.GameMaterials)
-                {
-                    <li>
-                        @if (material.FileType == "URL")
-                        {
-                            <a href="@material.FilePath" target="_blank">@material.Name</a>
-                        }
-                        else
-                        {
-                            <a href="/materials/@(Model.Game.Name.Replace(" ", "_"))/@System.IO.Path.GetFileName(material.FilePath)" target="_blank">@material.Name</a>
-                        }
-                    </li>
-                }
-            </ul>
-        }
-        else
-        {
-            <p>Нет загруженных материалов.</p>
-        }
-    </section> *@
+</div>
 
-    @* Форма для загрузки файла *@
-    <section>
-        <h2>Загрузить материалы</h2>
-        <form method="post" enctype="multipart/form-data" asp-page-handler="Upload" asp-route-id="@Model.Game.Id">
-            <input type="file" asp-for="UploadedFile" />
-            <button type="submit">Загрузить</button>
-        </form>
-    </section>
+<div>
+    <h4>Загрузить материалы</h4>
+    <form method="post" enctype="multipart/form-data" asp-page-handler="Upload" asp-route-id="@Model.Game.Id">
+        <span class="span-cont">
+            <div>
+                <label asp-for="Input.MaterialName"></label>
+                <input asp-for="Input.MaterialName" class="form-control" />
+                <span asp-validation-for="Input.MaterialName" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Input.UploadedFile"></label>
+                <input type="file" asp-for="Input.UploadedFile" class="form-control" />
+                <span asp-validation-for="Input.UploadedFile" class="text-danger"></span>
+            </div>
+        </span>
+        <button type="submit">Загрузить</button>
+    </form>
+
+    <h3>Список материалов</h3>
+    @if (Model.Materials.Any())
+    {
+        <ul name="materials">
+            @foreach (var material in Model.Materials)
+            {
+                <li class="material-item">
+                    <form method="post" asp-page-handler="DeleteMaterial" asp-route-materialId="@material.Id">
+                        <button type="submit" class="delete-button">&times;</button>
+                    </form>
+                    <a href="/materials/@(Model.Game.Name.Replace(" ", "_"))/@System.IO.Path.GetFileName(material.Path)" target="_blank" class="material-link">
+                        <span>@material.Name</span>
+                    </a>
+                   
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Нет загруженных материалов.</p>
+    }
 </div>

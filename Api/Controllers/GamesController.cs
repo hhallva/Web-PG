@@ -7,24 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DataLayer.DataContexts;
 using DataLayer.Models;
+using NuGet.Versioning;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GamesController : ControllerBase
+    public class GamesController(AppDbContext context) : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public GamesController(AppDbContext context)
-        {
-            _context = context;
-        }
-
         //Метод для получения списка всех существующих игр
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGamesAsync() 
-            => await _context.Games
+            => await context.Games
                 .Include(g => g.Genre)
                 .ToListAsync();
 
@@ -33,7 +27,7 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGameAsync(int id)
         {
-            var game = await _context.Games
+            var game = await context.Games
                 .Include(g => g.Genre)
                 .Include(g => g.GameVersions)
                 .SingleOrDefaultAsync(g => g.Id == id);
@@ -42,6 +36,20 @@ namespace Api.Controllers
                 return NotFound();
 
             return game;
+        }
+
+        //Метод для получения списка материалов прикрепленных к игре
+        [HttpGet("{gameId}/Materials")]
+        public async Task<ActionResult<List<Material>>> GetMaterials(int gameId)
+        {
+            var materials = await context.Materials
+                .Where(m => m.GameId == gameId)
+                .ToListAsync();
+
+            if (materials == null)
+                return NotFound();
+
+            return materials;
         }
     }
 }

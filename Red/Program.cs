@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient<UserService>();
 builder.Services.AddHttpClient<GameService>();
+builder.Services.AddHttpClient<MaterialService>();
 
 var app = builder.Build();
 

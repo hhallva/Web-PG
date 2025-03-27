@@ -1,4 +1,7 @@
-﻿namespace DataLayer.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
+namespace DataLayer.Models;
 
 public partial class Material
 {
@@ -14,5 +17,7 @@ public partial class Material
 
     public long? Size { get; set; }
 
-    public virtual Game Game { get; set; } = null!;
+    [JsonIgnore]
+    [NotMapped]
+    public virtual Game? Game { get; set; } = null!;
 }
