@@ -10,4 +10,6 @@ public partial class Genre
 
     [JsonIgnore]
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();
+
+    public override bool Equals(object? obj) => (obj is Genre genre) ? genre.Id == Id : false;
 }

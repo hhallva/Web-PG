@@ -1,0 +1,45 @@
+﻿<Window x:Class="Desktop.Windows.GamesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:model="clr-namespace:DataLayer.Models;assembly=DataLayer"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Desktop.Windows"
+        mc:Ignorable="d"
+        Title="Игры" Height="450" Width="800"
+        Loaded="Window_Loaded">
+    <Window.DataContext>
+        <model:Game/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock FontSize="30" Background="#FFA1FFF9" TextAlignment="Center" Text="Игры" Grid.ColumnSpan="2"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Жанр: " VerticalAlignment="Center"/>
+            <ComboBox Width="150" x:Name="GenreComboBox" DisplayMemberPath="Name" SelectionChanged="GenreComboBox_SelectionChanged"/>
+        </StackPanel>
+
+        <DockPanel Grid.Row="2" Background="White">
+            <Button x:Name="AddGameButton" Content="+" DockPanel.Dock="Bottom" Click="AddGameButton_Click"  Height="40" Width="40" HorizontalAlignment="Right" BorderBrush="{x:Null}" Background="#FFA1FFF9"/>
+            <ListView x:Name="gamesListView" HorizontalContentAlignment="Stretch" MouseDoubleClick="GamesListView_MouseDoubleClick" BorderBrush="{x:Null}">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="model:Game">
+                        <StackPanel Margin="5" Height="50" Background="#FFEDCAFF" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text=" — "/>
+                                <TextBlock Text="{Binding Genre.Name}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
+    </Grid>
+</Window>

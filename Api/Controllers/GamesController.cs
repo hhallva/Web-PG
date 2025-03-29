@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using DataLayer.DataContexts;
+using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DataLayer.DataContexts;
-using DataLayer.Models;
-using NuGet.Versioning;
 
 namespace Api.Controllers
 {
@@ -17,7 +11,7 @@ namespace Api.Controllers
     {
         //Метод для получения списка всех существующих игр
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGamesAsync() 
+        public async Task<ActionResult<IEnumerable<Game>>> GetGamesAsync()
             => await context.Games
                 .Include(g => g.Genre)
                 .ToListAsync();
