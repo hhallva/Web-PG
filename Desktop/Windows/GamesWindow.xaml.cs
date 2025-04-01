@@ -9,6 +9,7 @@ namespace Desktop.Windows
     {
         private readonly GameService _gameService = new();
         private readonly GenreService _genreService = new();
+
         List<Game> _games = new();
         List<Genre> _genres = new();
 
@@ -58,14 +59,21 @@ namespace Desktop.Windows
 
         private void GamesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            #region Открытие диалогового окна 
+            if (gamesListView.SelectedItem is not Game game)
+                return;
 
+            CreateGameWindow window = new CreateGameWindow(game);
+            window.ShowDialog();
+            #endregion
         }
 
         private void AddGameButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateGameWindow window = new CreateGameWindow(_gameService, _genres);
-            window.Show();
-            this.Close();
+            #region Открытие пустого диалогового окна
+            CreateGameWindow window = new CreateGameWindow(null);
+            window.ShowDialog();
+            #endregion
         }
     }
 }

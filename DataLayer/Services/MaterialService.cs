@@ -10,7 +10,6 @@ namespace DataLayer.Services
 {
     public class MaterialService
     {
-
         private readonly HttpClient _client;
         private readonly string _baseUrl = "http://localhost:5199/api/Materials/";
 

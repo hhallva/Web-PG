@@ -6,11 +6,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Desktop.Windows"
         mc:Ignorable="d"
-        Title="Игры" Height="450" Width="800"
-        Loaded="Window_Loaded">
-    <Window.DataContext>
-        <model:Game/>
-    </Window.DataContext>
+        Title="Игры" 
+        MinHeight="450" MinWidth="800"
+        Loaded="Window_Loaded"
+        WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -18,11 +17,14 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TextBlock FontSize="30" Background="#FFA1FFF9" TextAlignment="Center" Text="Игры" Grid.ColumnSpan="2"/>
+        <TextBlock FontSize="30" Background="#FFF5FFE0" TextAlignment="Center" Text="Games" Grid.ColumnSpan="2" FontFamily="Yu Gothic UI Light"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
             <TextBlock Text="Жанр: " VerticalAlignment="Center"/>
             <ComboBox Width="150" x:Name="GenreComboBox" DisplayMemberPath="Name" SelectionChanged="GenreComboBox_SelectionChanged"/>
+
+            <TextBlock Text="Поиск: " VerticalAlignment="Center" Margin="10,0,0,0"/>
+            <TextBox x:Name="SearthTextBox" Width="500"/>
         </StackPanel>
 
         <DockPanel Grid.Row="2" Background="White">
@@ -30,12 +32,13 @@
             <ListView x:Name="gamesListView" HorizontalContentAlignment="Stretch" MouseDoubleClick="GamesListView_MouseDoubleClick" BorderBrush="{x:Null}">
                 <ListView.ItemTemplate>
                     <DataTemplate DataType="model:Game">
-                        <StackPanel Margin="5" Height="50" Background="#FFEDCAFF" >
+                        <StackPanel Margin="5" Height="50" Background="#FFF5FFE0" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <TextBlock Text="{Binding Name}"/>
                                 <TextBlock Text=" — "/>
                                 <TextBlock Text="{Binding Genre.Name}"/>
                             </StackPanel>
+                            <TextBlock Text="{Binding Description}" MaxWidth="800" TextWrapping="Wrap" TextAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
