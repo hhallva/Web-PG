@@ -7,23 +7,16 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController(AppDbContext context) : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public UsersController(AppDbContext context)
-        {
-            _context = context;
-        }
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers() 
-            => await _context.Users.ToListAsync();
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+            => await context.Users.ToListAsync();
 
         [HttpGet("{userId}")]
         public async Task<ActionResult<User>> GetUser(int userId)
         {
-            var user = await _context.Users
+            var user = await context.Users
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
@@ -38,15 +31,15 @@ namespace Api.Controllers
                 return BadRequest();
 
 
-            _context.Entry(user).State = EntityState.Modified;
+            context.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (_context.Users.Any(e => e.Id == userId))
+                if (context.Users.Any(e => e.Id == userId))
                     return NotFound();
                 else
                     throw;
@@ -59,7 +52,7 @@ namespace Api.Controllers
         [HttpGet("{userId}/Games")]
         public async Task<ActionResult<List<Game>>> GetGamesAsync(int userId)
         {
-            var games = await _context.Games
+            var games = await context.Games
                 .Include(g => g.Genre)
                 .Where(g => g.Users.Any(u => u.Id == userId))
                 .ToListAsync();
@@ -76,22 +69,22 @@ namespace Api.Controllers
         {
             try
             {
-                var user = await _context.Users
+                var user = await context.Users
                     .Include(u => u.Games)
                     .FirstOrDefaultAsync(u => u.Id == userId);
 
                 if (user.Games.Any(g => g.Id == gameId))
                     return Conflict("Игра уже присутсвует");
 
-                var game = await _context.Games.FindAsync(gameId);
+                var game = await context.Games.FindAsync(gameId);
 
                 if (game == null)
                     return NotFound();
 
                 user.Games.Add(game);
-                _context.Users.Update(user);
+                context.Users.Update(user);
 
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 return CreatedAtAction("GetUser", new { userId = user.Id }, user);
             }
             catch
@@ -105,22 +98,22 @@ namespace Api.Controllers
         {
             try
             {
-                var user = await _context.Users
+                var user = await context.Users
                     .Include(u => u.Games)
                     .FirstOrDefaultAsync(u => u.Id == userId);
 
                 if (!user.Games.Any(g => g.Id == gameId))
                     return NotFound();
 
-                var game = await _context.Games.FindAsync(gameId);
+                var game = await context.Games.FindAsync(gameId);
 
                 if (game == null)
                     return NotFound();
 
                 user.Games.Remove(game);
-                _context.Users.Update(user);
+                context.Users.Update(user);
 
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 return CreatedAtAction("GetUser", new { userId = user.Id }, user);
             }
             catch

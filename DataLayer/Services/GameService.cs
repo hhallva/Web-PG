@@ -30,5 +30,37 @@ namespace DataLayer.Services
         public async Task<List<Material?>> GetMaterialsAsync(int id)
            => await _client.GetFromJsonAsync<List<Material?>>($"{id}/Materials");
 
+        public async Task<Game?> AddGameAsync(Game game)
+        {
+            HttpResponseMessage response =
+                await _client.PostAsJsonAsync("", game);
+            response.EnsureSuccessStatusCode();
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (int.TryParse(responseBody, out int gameId))
+            {
+                return await GetAsync(gameId);
+            }
+            else
+            {
+
+                return null;
+            }
+        }
+
+        public async Task DeleteGameAsync(int id)
+        {
+            HttpResponseMessage response =
+                await _client.DeleteAsync($"{id}");
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task UpdateAsync(Game game)
+        {
+            HttpResponseMessage response =
+                await _client.PutAsJsonAsync($"{game.Id}", game);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

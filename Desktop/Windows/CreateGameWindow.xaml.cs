@@ -26,52 +26,98 @@ namespace Desktop.Windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Game.Id != 0)
+            try
             {
-                AddGameButton.Visibility = Visibility.Collapsed;
-                
-                Game = await _gameService.GetAsync(Game.Id);
+                if (Game.Id != 0)
+                {
+                    #region Форма и отображение элементов
+                    Title = "Редактирование игры";
+
+                    NameVersionTextBox.Text = String.Empty;
+                    DescriptionVersionTextBox.Text = String.Empty;
+
+                    AddGameButton.Visibility = Visibility.Collapsed;
+                    SaveGameButton.Visibility = Visibility.Visible;
+                    AddVersionButton.Visibility = Visibility.Visible;
+                    #endregion
+
+                    Game = await _gameService.GetAsync(Game.Id);
+                }
+                else
+                {
+                    #region Форма и отображение элементов
+                    Title = "Добавление игры";
+
+                    AddGameButton.Visibility = Visibility.Visible;
+                    SaveGameButton.Visibility = Visibility.Collapsed;
+                    AddVersionButton.Visibility = Visibility.Collapsed;
+
+                    NameVersionTextBox.Text = "v1";
+                    DescriptionVersionTextBox.Text = "Самая первая версия игры.";
+                    ReleaseVersionDatePicker.SelectedDate = DateTime.Now;
+                    #endregion
+                }
+                DataContext = Game;
+
+                #region Отображение версий
+                VersionListView.ItemsSource = Game.GameVersions;
+                #endregion
+
+                #region Отображение жанров
+                _genres = await _genreService.GetAllAsync();
+                GenreComboBox.ItemsSource = _genres;
+                GenreComboBox.SelectedItem = Game.Genre;
+                #endregion
             }
-            else
+            catch (Exception ex)
             {
-                SaveGameButton.Visibility = Visibility.Collapsed;
+                MessageBox.Show($"Поизошла ошибка при загрузке информации об игр: {ex.Message}");
             }
-
-            VersionListView.ItemsSource = Game.GameVersions;
-            ReleaseVersionDatePicker.SelectedDate = DateTime.Now;
-
-            DataContext = Game;
-            _genres = await _genreService.GetAllAsync();
-            GenreComboBox.ItemsSource = _genres;
         }
 
-        private void AddGameButton_Click(object sender, RoutedEventArgs e)
+        private async void AddGameButton_Click(object sender, RoutedEventArgs e)
         {
+            #region Проверка на обязательность полей
+            if (CheckGameData())
+                return;
+            if (CheckVersionData())
+                return;
+            #endregion
 
+            try
+            {
+                Game.GenreId = (GenreComboBox.SelectedItem as Genre).Id;
+                Game = await _gameService.AddGameAsync(Game);
+                AddVersionButton_Click(sender, e);
+
+                Window_Loaded(sender, e);
+                MessageBox.Show($"Создание произошло успешно!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Поизошла ошибка при сохранении: {ex.Message}");
+            }
         }
 
-        private void SaveGameButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveGameButton_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                Game.GenreId = (GenreComboBox.SelectedItem as Genre).Id;
+                await _gameService.UpdateAsync(Game);
+                MessageBox.Show($"Сохранение произошло успешно!", "Сообщение.", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Поизошла ошибка при сохранении: {ex.Message}", "Сообщение.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private async void AddVersionButton_Click(object sender, RoutedEventArgs e)
         {
             #region Проверка на обязательность полей
-            StringBuilder errors = new StringBuilder();
-
-            if (String.IsNullOrWhiteSpace(NameVersionTextBox.Text))
-                errors.AppendLine("Укажите название версии");
-            if (String.IsNullOrWhiteSpace(DescriptionVersionTextBox.Text))
-                errors.AppendLine("Укажите название версии");
-            if (ReleaseVersionDatePicker.SelectedDate is not DateTime)
-                errors.AppendLine("Укажите дату публикации версии");
-
-            if (errors.Length > 0)
-            {
-                MessageBox.Show(errors.ToString());
+            if (CheckVersionData())
                 return;
-            }
             #endregion
 
             #region Создание объектов
@@ -95,18 +141,57 @@ namespace Desktop.Windows
 
                 using (WordService word = new())
                     word.CreatePdf(fileName, title, body);
-                MessageBox.Show($"Версия созданна успешно.\nСоздан приказ для разработчиков.");
+                MessageBox.Show($"Запрос на новую версию создан!\nСоздан приказ для разработчиков.");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex.Message}: Поизошла необработанная ошибка при создании новой версии");
+                MessageBox.Show($"Поизошла необработанная ошибка при создании новой версии: {ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 Window_Loaded(sender, e);
+
                 NameVersionTextBox.Text = "";
                 DescriptionTextBox.Text = "";
             }
+        }
+
+        private bool CheckGameData()
+        {
+            StringBuilder errors = new StringBuilder();
+
+            if (String.IsNullOrWhiteSpace(NameTextBox.Text))
+                errors.AppendLine("Укажите название новой игры");
+            if (String.IsNullOrWhiteSpace(DescriptionVersionTextBox.Text))
+                errors.AppendLine("Укажите описание новой игры");
+            if (GenreComboBox.SelectedItem is not Genre)
+                errors.AppendLine("Выберите жанр новой игры");
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString());
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckVersionData()
+        {
+            StringBuilder errors = new StringBuilder();
+
+            if (String.IsNullOrWhiteSpace(NameVersionTextBox.Text))
+                errors.AppendLine("Укажите название новой версии");
+            if (String.IsNullOrWhiteSpace(DescriptionVersionTextBox.Text))
+                errors.AppendLine("Укажите описание новой версии");
+            if (ReleaseVersionDatePicker.SelectedDate is not DateTime)
+                errors.AppendLine("Укажите дату публикации новой версии");
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString());
+                return true;
+            }
+            return false;
         }
     }
 }

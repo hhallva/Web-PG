@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Desktop"
              StartupUri="Windows\GamesWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

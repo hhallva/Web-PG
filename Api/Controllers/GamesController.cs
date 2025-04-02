@@ -32,6 +32,60 @@ namespace Api.Controllers
             return game;
         }
 
+        [HttpPost]
+        public async Task<int> PostGameAsync(Game game)
+        {
+            context.Games.Add(game);
+            await context.SaveChangesAsync();
+
+            return game.Id;
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteGameAsync(int id)
+        {
+            var game = await context.Games.SingleOrDefaultAsync(g => g.Id == id);
+
+            if (game == null)
+                return NotFound();
+
+            var versions = await context.GameVersions
+                .Where(v => v.GameId == id)
+                .ToListAsync();
+
+            context.GameVersions.RemoveRange(versions);
+            context.Games.Remove(game);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        //Метод для обновления информации об игре
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Game>> PutGameAsunc(int id, Game game)
+        {
+            if (id != game.Id)
+                return BadRequest();
+
+            context.Entry(game).State = EntityState.Modified;
+
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (context.Games.Any(e => e.Id == id))
+                    return NotFound();
+                else
+                    throw;
+            }
+
+            return NoContent();
+        }
+
         //Метод для получения списка материалов прикрепленных к игре
         [HttpGet("{gameId}/Materials")]
         public async Task<ActionResult<List<Material>>> GetMaterials(int gameId)
@@ -45,5 +99,9 @@ namespace Api.Controllers
 
             return materials;
         }
+
+
+
+
     }
 }
