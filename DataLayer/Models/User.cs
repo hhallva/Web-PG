@@ -18,7 +18,7 @@ public partial class User
     public string Password { get; set; } = null!;
 
     [Required(ErrorMessage = "Номер телефона обязателен.")]
-    [RegularExpression(@"^((\+\d\(\d{3}\)\d{3}-\d{2}-\d{2})", ErrorMessage = "Номер телефона должен соответствовать формату +7(000)000-00-00")]
+    [RegularExpression(@"^\+\d\(\d{3}\)\d{3}-\d{2}-\d{2}$", ErrorMessage = "Номер телефона должен соответствовать формату +7(000)000-00-00")]
     public string Phone { get; set; } = null!;
 
     public virtual ICollection<Game> Games { get; set; } = new List<Game>();
