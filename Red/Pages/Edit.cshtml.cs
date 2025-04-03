@@ -23,8 +23,11 @@ namespace Red.Pages
             return Page();
         }
 
-        public async Task OnPostAsync(int id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
+            if (!ModelState.IsValid)
+                return Page();
+
             try
             {
                 await userService.UpdateAsync(CurrentUser);
@@ -34,6 +37,7 @@ namespace Red.Pages
             {
                 Message = "Ошибка сохранения данных.";
             }
+            return Page();
         }
     }
 }

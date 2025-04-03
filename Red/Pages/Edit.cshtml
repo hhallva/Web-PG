@@ -14,14 +14,17 @@
         <p>
             <label>Логин:</label><br />
             <input type="text" asp-for="@Model.CurrentUser.Login" />
+            <span asp-validation-for="CurrentUser.Login" class="text-danger"></span>
         </p>
         <p>
             <label>Пароль:</label><br />
             <input type="password" asp-for="@Model.CurrentUser.Password" value="@Model.CurrentUser.Password" />
+            <span asp-validation-for="CurrentUser.Password" class="text-danger"></span>
         </p>
         <p>
             <label>Телефон:</label><br />
             <input type="tel" asp-for="@Model.CurrentUser.Phone" />
+            <span asp-validation-for="CurrentUser.Phone" class="text-danger"></span>
         </p>
         <input type="submit" value="Сохранить" />
     </form>
@@ -31,14 +34,3 @@
         <p class="message">@Model.Message</p>
     }
 </div>
-
-@* <span href="./Edit/@user.Id"> ⚙️</span> *@
-
-
-
-
-
-
-
-
-
